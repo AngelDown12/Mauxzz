@@ -1,58 +1,37 @@
+/* Tiktok MP3 By WillZek 
+- Free Codes Titan 
+- https://whatsapp.com/channel/0029ValMlRS6buMFL9d0iQ0S
+*/
+
+// [💥] 𝗧𝗜𝗞𝗧𝗢𝗞 𝗠𝗣3 - 𝗗𝗟
+
 import fetch from 'node-fetch';
 
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-  if (!args[0]) {
-    return m.reply(`🎩 Ingrese una URL de TikTok\n*Ejemplo:* ${usedPrefix + command} https://vm.tiktok.com/ZMh3KL31o/`);
-  }
+let handler = async(m, { conn, args, usedPrefix, command }) => {
 
-  const tiktokUrl = args[0];
+if (!args[0]) return m.reply(`🎩 Ingrese Una Url De Tiktok\n*Ejemplo:* ${usedPrefix + command} https://vm.tiktok.com/ZMh3KL31o/`);
 
-  if (!tiktokUrl.match(/tiktok\.com\//i)) {
-    return m.reply('❌ La URL proporcionada no parece ser una URL de TikTok válida.');
-  }
+try {
+let api = `https://eliasar-yt-api.vercel.app/api/search/tiktok?query=${args[0]}`;
+let response = await fetch(api);
+let json = await response.json();
+let res = json.results;
 
-  try {
-    m.react('🕑'); 
+m.react('🕑');
+let ttt = `*Autor:* ${res.author}\n*Título:* ${res.title}`;
 
-    let api = `https://eliasar-yt-api.vercel.app/api/search/tiktok?query=${encodeURIComponent(tiktokUrl)}`;
-    let response = await fetch(api);
+let aud = res.audio;
+let img = 'https://files.catbox.moe/51xcx4.jpg';
 
-    if (!response.ok) {
-      console.error(`API respondió con estado: ${response.status} ${response.statusText}`);
-      try {
-        const errorJson = await response.json();
-        console.error('Detalles del error de la API:', errorJson);
-        return m.reply(`❌ La API de TikTok devolvió un error: ${errorJson.message || 'Error desconocido'}`);
-      } catch (parseError) {
-        return m.reply(`❌ La API de TikTok devolvió un error (Estado: ${response.status}). Intenta de nuevo más tarde.`);
-      }
-    }
+await conn.sendFile(m.chat, img, 'thumbnail.jpg', ttt, m, null);
 
-    let json = await response.json();
-    
-    let res = json.results; 
+conn.sendMessage(m.chat, { audio: { url: aud }, mimetype: 'audio/mpeg' }, { quoted: m });
+m.react('✅');
 
-    if (!res || !res.audio) {
-      return m.reply('❌ No se encontró el audio para esta URL de TikTok. La API no devolvió el campo de audio esperado.');
-    }
-
-    let aud = res.audio;
-    let title = res.title || 'Audio de TikTok'; 
-
-    await conn.sendMessage(m.chat, {
-      audio: { url: aud },
-      mimetype: 'audio/mpeg',
-      fileName: `${title}.mp3`, 
-      ptt: false 
-    }, { quoted: m });
-
-    m.react('✅'); 
-
-  } catch (e) {
-    console.error('Error al obtener el audio de TikTok:', e); 
-    m.reply(`❌ Ocurrió un error al obtener el audio de TikTok: ${e.message}. Intenta de nuevo más tarde.`);
-    m.react('✖️'); 
-  }
+} catch (e) {
+m.reply(`Error: ${e.message}`);
+m.react('✖️');
+ }
 }
 
 handler.command = ['tiktokmp3', 'ttmp3'];

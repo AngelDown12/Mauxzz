@@ -1,5 +1,5 @@
 
-// Código Hecho Por Barboza
+// Código Hecho Por •          𝐌𝐚𝐮/ 𝟑𝟑𝟑
 let handler = async (m, { conn }) => {
     // React con un emoji al mensaje
     await m.react('⭐');

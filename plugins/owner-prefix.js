@@ -1,30 +1,17 @@
-let subbotPrefixes = {}  // Prefijos por instancia en memoria
 
-let handler = async (m, { conn, text, args}) => {
-  const jid = conn.user?.id?.split(':')[0] + '@s.whatsapp.net'
+const handler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text) throw `💸 No se encontró ningún prefijo. Por favor, escribe un prefijo.\n> *Ejemplo: ${usedPrefix + command} !*`;
 
-  if (!m.key.fromMe) {
-    return m.reply('🔒 Este comando solo puede usarlo el *propietario del subbot* (mensajes enviados desde el propio bot).')
-}
+  global.prefix = new RegExp('^[' + (text || global.opts['prefix'] || '‎xzXZ/i!#$%+£¢€¥^°=¶∆×÷π√✓©®:;?&.\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']');
 
-  const prefix = text?.trim()
-  if (!prefix || prefix.length> 2) {
-    return m.reply(`❌ Prefijo inválido.\n\n✅ Ejemplo:.setprefijo ⚡`)
-}
+  // Mensaje de confirmación
+  let successMessage = `✅️ Prefijo actualizado con éxito. Prefijo actual: ${text}`;
 
-  subbotPrefixes[jid] = prefix
+  await conn.fakeReply(m.chat, successMessage, '0@s.whatsapp.net', '✨ PREFIJO NUEVO ✨');
+};
 
-  m.reply(`
-✅ *Prefijo actualizado localmente para este subbot.*
-📌 Nuevo prefijo: *${prefix}*
-🚫 No afecta al prefijo del bot principal.
-`)
-}
+handler.help = ['prefix'].map(v => v + ' [prefix]');
+handler.command = ['prefix'];
+handler.rowner = true;
 
-handler.command = ['setprefijo']
-handler.owner = true
-handler.register = false
-
-export const getSubbotPrefix = (jid) => subbotPrefixes[jid] || '.'
-
-export default handler
+export default handler;

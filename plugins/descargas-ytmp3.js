@@ -55,7 +55,7 @@ const sendAudioWithRetry = async (conn, chat, audioUrl, videoTitle, maxRetries =
           contextInfo: {
             externalAdReply: {
               title: videoTitle,
-              body: "Barboza hijueputa",
+              body: "•          𝐌𝐚𝐮/ 𝟑𝟑𝟑 ",
               previewType: 'PHOTO',
               thumbnail: thumbnailBuffer,
               mediaType: 1,

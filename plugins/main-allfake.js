@@ -47,7 +47,7 @@ var handler = async function (m, conn, db) {
 
     // Lista de canales
     let canalIdM = ["120363414007802886@newsletter", "120363414007802886@newsletter"]
-    let canalNombreM = ["bot Barboza", "✧┊┋◟🚀Barboza🚀◞┊┋✧"]
+    let canalNombreM = ["𝐁𝐨𝐭 •          𝐌𝐚𝐮/ 𝟑𝟑𝟑", "✧┊┋◟🚀•          𝐌𝐚𝐮/ 𝟑𝟑𝟑🚀◞┊┋✧"]
     
     async function getRandomChannel() {
         let randomIndex = Math.floor(Math.random() * canalIdM.length)
@@ -93,7 +93,7 @@ var handler = async function (m, conn, db) {
     }
 
     // Selección de canal aleatorio
-    let rcanal = { 
+    let  = { 
         contextInfo: { 
             isForwarded: true, 
             forwardedNewsletterMessageInfo: { 
@@ -114,7 +114,7 @@ var handler = async function (m, conn, db) {
         } 
     }
 
-    return { fotoperfil, userNationality, pushname, taguser, rimg, wait, fkontak, rcanal }
+    return { fotoperfil, userNationality, pushname, taguser, rimg, wait, fkontak,  }
 }
 
 export default handler

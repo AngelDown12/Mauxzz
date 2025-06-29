@@ -1,78 +1,56 @@
-import fetch from 'node-fetch';
+import fetch from 'node-fetch'
+import yts from 'yt-search'
 
-let handler = async (m, { conn, usedPrefix, command, text }) => {
-  if (!text) {
-    await m.react('📀');
-    return m.reply(`╭─⬣「 Barboza 」⬣
-│  ❗ *Uso Incorrecto*
-│  ➤ Ingresa un texto para buscar en YouTube.
-│  ➤ *Ejemplo:* ${usedPrefix + command} Shakira
-╰`);
+let handler = async (m, { conn, command, text, usedPrefix }) => {
+  if (!text) throw m.reply(`✧ Ejemplo: ${usedPrefix}${command} Waguri Edit`);
+
+  const wx = 'By Criss';
+
+  await conn.sendMessage(m.chat, { react: { text: '🕒', key: m.key }});
+
+  const results = await yts(text);
+
+  if (!results.videos.length) throw m.reply('⚠️ No se encontraron resultados.');
+  const tes = results.videos[0];
+
+  const apiUrl = `https://www.apis-anomaki.zone.id/downloader/ytv?url=${encodeURIComponent(tes.url)}`;
+
+  const respuesta = await fetch(apiUrl);
+  const keni = await respuesta.json();
+
+  if (!keni.status || !keni.result || !keni.result.formats || !keni.result.formats.length) {
+    throw m.reply('⚠️ La API no devolvió resultados válidos.');
   }
 
-  try {
-    await m.react('📀'); // buscando...
+  const { url, qualityLabel, fps } = keni.result.formats[0];
+  const title = keni.result.title || 'video';
 
-    const searchApi = `https://delirius-apiofc.vercel.app/search/ytsearch?q=${text}`;
-    const searchResponse = await fetch(searchApi);
-    const searchData = await searchResponse.json();
+  if (!url) throw m.reply('⚠️ No se pudo obtener el enlace de descarga.');
 
-    if (!searchData?.data || searchData.data.length === 0) {
-      await m.react('🔴');
-      return m.reply(`╭─⬣「 *Barboza* 」⬣
-│  ⚠️ *Sin Resultados*
-│  ➤ No se encontraron resultados para:
-│  ➤ *"${text}"*
-╰`);
-    }
+  const caption = `
+*💮 PLAY VIDEO 💮*
 
-    const video = searchData.data[0];
+✧ : \`titulo;\` ${tes.title || 'no encontrado'}
+✧ : \`duracion;\` ${tes.duration || 'no encontrado'}
+✧ : \`calidad;\` ${qualityLabel || 'no encontrado'}
+✧ : \`fps;\` ${fps || 'no encontrado'}
 
-    let info = `╭─⬣「 *Barboza* 」⬣
-│  ≡◦🎵 *Título:* ${video.title}
-│  ≡◦📺 *Canal:* ${video.author.name}
-│  ≡◦⏱️ *Duración:* ${video.duration}
-│  ≡◦👁️ *Vistas:* ${video.views}
-│  ≡◦📅 *Publicado:* ${video.publishedAt}
-│  ≡◦🔗 *Enlace:* ${video.url}
-╰`;
+> ${wx}
+> Pedido de @${m.sender.split('@')[0]}`;
 
-    await conn.sendMessage(m.chat, {
-      image: { url: video.image },
-      caption: info
-    }, { quoted: m });
+  await conn.sendMessage(m.chat, {
+    video: { url },
+    mimetype: "video/mp4",
+    fileName: `${title}.mp4`,
+    caption,
+    mentions: [m.sender]
+  }, { quoted: m });
 
-    const downloadApi = `https://api.vreden.my.id/api/ytmp3?url=${video.url}`;
-    const downloadResponse = await fetch(downloadApi);
-    const downloadData = await downloadResponse.json();
-
-    if (!downloadData?.result?.download?.url) {
-      await m.react('🔴');
-      return m.reply(`╭─⬣「 *Barboza* 」⬣
-│  ❌ *Error al descargar*
-│  ➤ No se pudo obtener el audio del video.
-╰`);
-    }
-
-    await conn.sendMessage(m.chat, {
-      audio: { url: downloadData.result.download.url },
-      mimetype: 'audio/mpeg',
-      fileName: `${video.title}.mp3`
-    }, { quoted: m });
-
-    await m.react('🟢'); // éxito
-  } catch (error) {
-    console.error(error);
-    await m.react('🔴');
-    m.reply(`╭─⬣「 *Barboza * 」⬣
-│  ❌ *Error Interno*
-│  ➤ ${error.message}
-╰`);
-  }
+  await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key }});
 };
 
-handler.command = ['play', 'playaudio'];
-handler.help = ['play <texto>', 'playaudio <texto>'];
-handler.tags = ['media'];
+handler.help = ['playvideo *<consulta>*'];
+handler.tags = ['descargas'];
+handler.command = /^(playvideo|playvid)$/i;
 
 export default handler;
