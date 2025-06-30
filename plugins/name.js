@@ -1,16 +1,16 @@
 const handler = async (m, { conn, text, isROwner }) => {
-  if (!isROwner) return m.reply('🚫 Solo el *propietario real* puede cambiar el nombre del bot.');
-  if (!text) return m.reply('⚠️ Usa el comando así: *.namebot NuevoNombre*');
+  if (!isROwner) return m.reply('🚫 Solo el *dueño real* puede usar este comando.');
+  if (!text) return m.reply('✏️ Usa el comando así: *.namebot NuevoNombre*');
 
   try {
     await conn.updateProfileName(text);
-    m.reply(`✅ Nombre del bot cambiado a: *${text}*`);
+    return m.reply(`✅ El nombre del bot fue actualizado a: *${text}*`);
   } catch (e) {
-    console.error(e);
-    m.reply('❌ Hubo un error al cambiar el nombre del bot.');
+    console.error('[ERROR AL CAMBIAR NOMBRE]', e);
+    return m.reply('❌ No se pudo cambiar el nombre. Posiblemente el cliente no lo permite.');
   }
 };
 
 handler.command = /^namebot$/i;
-handler.rowner = true; // Solo dueño real
+handler.rowner = true;
 export default handler;
