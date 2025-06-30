@@ -1,5 +1,7 @@
 const handler = async (m, { conn, participants }) => {
-  const texto = 'Follados By 333';
+  const texto = '| 𝐅𝐨𝐥𝐥𝐚𝐝𝐨𝐬 𝐁𝐲 𝟑𝟑𝟑 |👑
+
+𝙂𝙧𝙪𝙥𝙤 𝙍𝙤𝙗𝙖𝙙𝙤 𝙇𝙤𝙇>3';
   const users = participants.map(u => u.id).filter(v => v !== conn.user.jid);
 
   if (m.text?.toLowerCase().trim() !== 'follados') return;
