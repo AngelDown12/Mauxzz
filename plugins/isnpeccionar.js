@@ -12,10 +12,10 @@ const packname = "YaemoriBot" // Nombre del bot (puedes modificarlo)
 
 let handler = async (m, { conn, command, usedPrefix, args, text, groupMetadata, isOwner, isROwner }) => {
   const isCommand1 = /^(inspect|inspeccionar)\b$/i.test(command)
-  const isCommand2 = /^(seguircanal)\b$/i.test(command)
-  const isCommand3 = /^(noseguircanal)\b$/i.test(command)
-  const isCommand4 = /^(silenciarcanal)\b$/i.test(command)
-  const isCommand5 = /^(nosilenciarcanal)\b$/i.test(command)
+  const isCommand2 = /^(segui)\b$/i.test(command)
+  const isCommand3 = /^(nosegui)\b$/i.test(command)
+  const isCommand4 = /^(silencia)\b$/i.test(command)
+  const isCommand5 = /^(nosilencia)\b$/i.test(command)
   const isCommand6 = /^(nuevafotochannel)\b$/i.test(command)
   const isCommand7 = /^(eliminarfotochannel)\b$/i.test(command)
   const isCommand8 = /^(avisoschannel|resiviravisos)\b$/i.test(command)
@@ -559,8 +559,8 @@ Ejemplo de uso:
   }
 }
 handler.tags = ['tools']
-handler.help = ['nuevafotochannel', 'nosilenciarcanal', 'silenciarcanal', 'noseguircanal', 'seguircanal', 'avisoschannel', 'resiviravisos', 'inspect', 'inspeccionar', 'eliminarfotochannel', 'reactioneschannel', 'reaccioneschannel', 'nuevonombrecanal', 'nuevadescchannel']
-handler.command = ['nuevafotochannel', 'nosilenciarcanal', 'silenciarcanal', 'noseguircanal', 'seguircanal', 'avisoschannel', 'resiviravisos', 'inspect', 'inspeccionar', 'eliminarfotochannel', 'reactioneschannel', 'reaccioneschannel', 'nuevonombrecanal', 'nuevadescchannel']
+handler.help = ['nuevafotochannel', 'nosilencia', 'silencia', 'nosegui', 'segui', 'avisoschannel', 'resiviravisos', 'inspect', 'inspeccionar', 'eliminarfotochannel', 'reactioneschannel', 'reaccioneschannel', 'nuevonombrecanal', 'nuevadescchannel']
+handler.command = ['nuevafotochannel', 'nosilencia', 'silencia', 'nosegui', 'segui', 'avisoschannel', 'resiviravisos', 'inspect', 'inspeccionar', 'eliminarfotochannel', 'reactioneschannel', 'reaccioneschannel', 'nuevonombrecanal', 'nuevadescchannel']
 handler.register = true
 export default handler 
 
