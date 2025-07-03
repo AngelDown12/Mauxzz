@@ -6,7 +6,7 @@ const handler = async (m, { conn, participants, isAdmin, isOwner }) => {
   const texto = (m.text || '').trim();
   const mensaje = texto.replace(/^(\.|)?(tagall|invocar|invocacion|invocación|todos|talibanes)\s*/i, '');
 
-  const emojis = ['💩', '🤡'];
+  const emojis = ['🤴🏽', '👸🏼'];
   const lista = participants.map((u, i) => `${emojis[i % emojis.length]} @${u.id.split('@')[0]}`).join('\n');
 
   const textoFinal = [
