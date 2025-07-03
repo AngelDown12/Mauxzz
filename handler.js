@@ -480,7 +480,7 @@ global.dfail = (type, m, conn, usedPrefix) => {
                 title: '𝐑𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🚩',
                 body: '𝐑𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🚩',
                 mediaType: 1,
-                thumbnailUrl: 'https://qu.ax/tNPfx.jpg',
+                thumbnailUrl: 'https://qu.ax/GbxoW.jpg',
                 renderLargerThumbnail: false,
                 sourceUrl: ''
             }
