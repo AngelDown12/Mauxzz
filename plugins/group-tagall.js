@@ -1,4 +1,4 @@
-const wm = '•       𝐌𝐚𝐮/ 𝟑𝟑𝟑';
+const wm = '𝐫𝐞𝐲𝐞𝐬 𝟑𝟑𝟑';
 
 const handler = async (m, { conn, participants, isAdmin, isOwner }) => {
   if (!isAdmin && !isOwner) return conn.reply(m.chat, '*⚠️ Este comando es solo para admins.*', m);
