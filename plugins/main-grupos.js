@@ -1,14 +1,14 @@
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, usedPrefix, command }) => {
-    let grupos = "*Hola!, te invito a unirte a los grupos oficiales del Bot para convivir con la comunidad* ⭐\n\n" +
-                 "1-•          𝐌𝐚𝐮/ 𝟑𝟑𝟑\n" +
-                 "*✰* https://chat.whatsapp.com/CBuLXuVZcg9FEfCSHiY6b0" +
-                 "*─ׄ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׄ*\n\n" +
-                 "➠ Enlace anulado? entre aquí! \n\n" +
-                 "⭐ Canal :\n" +
-                 "*✰*https://whatsapp.com/channel/0029Vb8kvXUBfxnzYWsbS81I" +
-                 "> By •          𝐌𝐚𝐮/ 𝟑𝟑𝟑";
+    let grupos = "𝐇𝐨𝐥𝐚 𝐋𝐨𝐬 𝐢𝐧𝐯𝐢𝐭𝐚𝐦𝐨𝐬 𝐚 𝐧𝐮𝐞𝐬𝐭𝐫𝐨𝐬 
+𝐠𝐫𝐮𝐩𝐨𝐬 𝐝𝐞 𝐰𝐡𝐚𝐭𝐬𝐚𝐩𝐩𝐬 𝐚𝐦𝐢𝐠@𝐬💋
+
+1-•      🤴🏽𝐑𝐞𝐲𝐞𝐬/𝟑𝟑𝟑
+https://chat.whatsapp.com/ELbgZy9bOZa4IaDyH5UvYP?mode=ac_c
+
+2-•     ⭐️Canal :
+https://whatsapp.com/channel/0029Vb6PvNgE50UeyUYx1105";
 
     // Asegúrate de definir 'imagen2' correctamente antes de usarlo
     let imagen2 = 'https://qu.ax/Mvhfa.jpg';
