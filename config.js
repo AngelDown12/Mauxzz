@@ -24,18 +24,18 @@ global.prems = []
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.packname = `[ 🌪️Sticker Maker`
-global.author = 'ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ 🌪️]'
-global.stickpack = '©ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ-ᥲі'
-global.stickauth = 'ᑲᥡ ᑲᥲrᑲ᥆zᥲ'
-global.wm = 'ᑲᥲrᑲ᥆zᥲ 🌪️'
+global.packname = `[ 𝐁𝐨𝐭 𝐫𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️`
+global.author = '𝐫𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️'
+global.stickpack = '𝐁𝐨𝐭 𝐫𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️'
+global.stickauth = '𝐫𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️'
+global.wm = '𝐑𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️'
 global.dev = '© 𝖯᥆𝗐ᥱ𝗋ᥱძ ᑲᥡ 𝖲ᥙᥒ𝖿ᥣᥲ𝗋ᥱ  ☂︎  𝖳ᥱᥲ𝗆'
-global.wait = '🌪️ *Aɢᴜᴀʀᴅᴇ ᴜɴ ᴍᴏᴍᴇɴᴛᴏ, sᴏʏ ʟᴇɴᴛ𝙾... ฅ^•ﻌ•^ฅ\n\n> ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ 🌪️*'
-global.botname = '[ 🌪️𝐁𝐚𝐫𝐛𝐨𝐳𝐚 𝐀𝐢 𝐖𝐡𝐚𝐬𝐀𝐩𝐩 𝐁𝐨𝐭 ]'
-global.textbot = `Powered By Bot Barboza🌪️`
-global.dev = '• ⍴᥆ᥕᥱrᥱძ ᑲᥡ ᥴ᥆mᥙᥒі𝗍ᥡ ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ'
+global.wait = '𝐑𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️'
+global.botname = '𝐁𝐨𝐭 𝐫𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️'
+global.textbot = `𝐁𝐨𝐭 𝐫𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️`
+global.dev = '𝐁𝐨𝐭 𝐫𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️'
 global.listo = '*Aqui tiene ฅ^•ﻌ•^ฅ*'
-global.namechannel = 'ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ-ᥲі🌪️'
+global.namechannel = '𝐁𝐨𝐭 𝐫𝐞𝐲𝐞𝐬 𝐭𝐥𝐞 𝐭𝐥𝐞 𝐭𝐥𝐞 🕷️'
 global.channel = 'https://whatsapp.com/channel/0029Vaua0ZD3gvWjQaIpSy18'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
