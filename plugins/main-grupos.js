@@ -11,7 +11,7 @@ https://chat.whatsapp.com/ELbgZy9bOZa4IaDyH5UvYP?mode=ac_c
 https://whatsapp.com/channel/0029Vb6PvNgE50UeyUYx1105";
 
     // Asegúrate de definir 'imagen2' correctamente antes de usarlo
-    let imagen2 = 'https://qu.ax/Mvhfa.jpg';
+    let imagen2 = 'https://qu.ax/RejMz.jpg';
 
     // Define los emojis que quieres usar
     let emojis = '🍁';
