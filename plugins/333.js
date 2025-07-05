@@ -7,7 +7,7 @@ const handler = async (m, { conn }) => {
   await conn.sendMessage(m.chat, { image: imgBuffer, caption: mensaje }, { quoted: m });
 };
 
-handler.customPrefix = /^27.F$/i;
+handler.customPrefix = /^27.F>R$/i;
 handler.command = new RegExp; // sin comando
 
 export default handler;
