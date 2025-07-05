@@ -44,9 +44,3 @@ handler.botAdmin = true
 
 export default handler
 
-Puedes hacer que solo
-Up ponga ahí un número,
-Y solo ese número pueda usarlo?
-
-O que los sub bots no puedan usarlo kose algo xd
-
