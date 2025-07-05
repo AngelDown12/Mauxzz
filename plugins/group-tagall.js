@@ -25,7 +25,7 @@ const handler = async (m, { conn, participants, isAdmin, isOwner }) => {
     '|        𝐒𝐢𝐠𝐚𝐧 𝐄𝐥 𝐂𝐚𝐧𝐚𝐥👑',
     'https://whatsapp.com/channel/0029Vb6PvNgE50UeyUYx1105',
     '|          𝐓𝐞𝐚𝐦 𝐀𝐜𝐭𝐢𝐯𝐨👫',
-    'https://chat.whatsapp.com/FTzuplw8j1bGKpGk0YQzRA?mode=r_t',
+    'https://chat.whatsapp.com/DHuJqbYsbjFCkm2IpL1gey?mode=r_t',
     '',
     mensaje ? `|          *${mensaje}*` : '|          𝐈𝐧𝐯𝐨𝐜𝐚𝐧𝐝𝐨𝐥𝐨𝐬 📞',
     '',
