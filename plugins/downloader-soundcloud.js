@@ -1,231 +1,99 @@
-import yts from 'yt-search';
-import fs from 'fs';
-import axios from 'axios';
+import fetch from "node-fetch";
+import yts from "yt-search";
+import axios from "axios";
 
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const ddownr = {
+  download: async (url, format) => {
+    const validFormats = ["mp3", "m4a", "webm", "acc", "flac", "opus", "ogg", "wav", "360", "480", "720"];
+    if (!validFormats.includes(format)) throw new Error("❌ Formato inválido.");
 
-const MAX_RETRIES = 2;
-const TIMEOUT_MS = 10000;
-const RETRY_DELAY_MS = 12000;
+    const config = {
+      method: "GET",
+      url: `https://p.oceansaver.in/ajax/download.php?format=${format}&url=${encodeURIComponent(url)}&api=dfcb6d76f2f6a9894gjkege8a4ab232222`,
+      headers: { "User-Agent": "Mozilla/5.0" },
+    };
 
-const countryCodes = {
-  '+54': { country: 'Argentina', timeZone: 'America/Argentina/Buenos_Aires' },
-  '+591': { country: 'Bolivia', timeZone: 'America/La_Paz' },
-  '+56': { country: 'Chile', timeZone: 'America/Santiago' },
-  '+57': { country: 'Colombia', timeZone: 'America/Bogota' },
-  '+506': { country: 'Costa Rica', timeZone: 'America/Costa_Rica' },
-  '+53': { country: 'Cuba', timeZone: 'America/Havana' },
-  '+593': { country: 'Ecuador', timeZone: 'America/Guayaquil' },
-  '+503': { country: 'El Salvador', timeZone: 'America/El_Salvador' },
-  '+34': { country: 'España', timeZone: 'Europe/Madrid' },
-  '+502': { country: 'Guatemala', timeZone: 'America/Guatemala' },
-  '+504': { country: 'Honduras', timeZone: 'America/Tegucigalpa' },
-  '+52': { country: 'México', timeZone: 'America/Mexico_City' },
-  '+505': { country: 'Nicaragua', timeZone: 'America/Managua' },
-  '+507': { country: 'Panamá', timeZone: 'America/Panama' },
-  '+595': { country: 'Paraguay', timeZone: 'America/Asuncion' },
-  '+51': { country: 'Perú', timeZone: 'America/Lima' },
-  '+1': { country: 'Puerto Rico', timeZone: 'America/Puerto_Rico' },
-  '+1-809': { country: 'República Dominicana', timeZone: 'America/Santo_Domingo' },
-  '+1-829': { country: 'República Dominicana', timeZone: 'America/Santo_Domingo' },
-  '+1-849': { country: 'República Dominicana', timeZone: 'America/Santo_Domingo' },
-  '+598': { country: 'Uruguay', timeZone: 'America/Montevideo' },
-  '+58': { country: 'Venezuela', timeZone: 'America/Caracas' }
-};
+    const response = await axios.request(config);
+    if (!response.data?.success) throw new Error("❌ No se pudo obtener el enlace.");
 
-const getGreeting = (hour) => {
-  return hour < 12 ? 'Buenos días 🌅' : hour < 18 ? 'Buenas tardes 🌄' : 'Buenas noches 🌃';
-};
+    const downloadUrl = await ddownr.checkProgress(response.data.id);
+    if (!downloadUrl) throw new Error("❌ Falló obtener el enlace final.");
+    return downloadUrl;
+  },
 
-const getUserGreeting = (userNumber, limaTime) => {
-  const phoneCode = userNumber.startsWith('+') ? userNumber.split('@')[0].split('-')[0] : null;
-  const countryInfo = phoneCode ? countryCodes[phoneCode] : null;
-  
-  if (countryInfo) {
-    try {
-      const localTime = new Date(limaTime.toLocaleString('en-US', { timeZone: countryInfo.timeZone }));
-      const localHour = localTime.getHours();
-      return `${getGreeting(localHour)} @${userNumber}, (${countryInfo.country})`;
-    } catch {
-      return `${getGreeting(limaTime.getHours())} @${userNumber}, (${countryInfo.country})`;
+  checkProgress: async (id) => {
+    const config = {
+      method: "GET",
+      url: `https://p.oceansaver.in/ajax/progress.php?id=${id}`,
+      headers: { "User-Agent": "Mozilla/5.0" },
+    };
+
+    for (let i = 0; i < 20; i++) {  // Limitar a máximo 20 intentos (~40 seg)
+      const res = await axios.request(config);
+      if (res.data?.success && res.data.progress === 1000) return res.data.download_url;
+      await new Promise(r => setTimeout(r, 2000));
     }
-  }
-  return `${getGreeting(limaTime.getHours())} @${userNumber}`;
+    return null;
+  },
 };
 
-const isUserBlocked = (userId) => {
-  try {
-    const blockedUsers = JSON.parse(fs.readFileSync('./bloqueados.json', 'utf8'));
-    return blockedUsers.includes(userId);
-  } catch {
-    return false;
-  }
-};
+const handler = async (m, { conn, text, command }) => {
+  if (!text?.trim()) return;
 
-const getDownloadUrl = async (videoUrl) => {
-  const apis = [{ url: 'https://api.vreden.my.id/api/ytmp3?url=', type: 'vreden' }];
-
-  for (const api of apis) {
-    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-      try {
-        const response = await axios.get(`${api.url}${encodeURIComponent(videoUrl)}`, { timeout: TIMEOUT_MS });
-        if (
-          response.data?.status === 200 &&
-          response.data?.result?.download?.url &&
-          response.data?.result?.download?.status === true
-        ) {
-          return {
-            url: response.data.result.download.url.trim(),
-            title: response.data.result.metadata.title
-          };
-        }
-      } catch {
-        if (attempt < MAX_RETRIES - 1) await wait(RETRY_DELAY_MS);
-      }
-    }
-  }
-  return null;
-};
-
-const sendAudioNormal = async (conn, chat, audioUrl, videoTitle) => {
-  let thumbnailBuffer = null;
-  try {
-    const response = await axios.get('https://qu.ax/GbxoW.jpg', { responseType: 'arraybuffer' });
-    thumbnailBuffer = Buffer.from(response.data, 'binary');
-  } catch {}
-
-  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-    try {
-      await conn.sendMessage(
-        chat,
-        {
-          audio: { url: audioUrl },
-          mimetype: 'audio/mpeg',
-          contextInfo: {
-            externalAdReply: {
-              title: videoTitle,
-              body: '•          𝐌𝐚𝐮/ 𝟑𝟑𝟑 Music',
-              previewType: 'PHOTO',
-              thumbnail: thumbnailBuffer || null,
-              mediaType: 1,
-              renderLargerThumbnail: false,
-              showAdAttribution: true,
-            }
-          }
-        },
-        { quoted: null }
-      );
-      return true;
-    } catch {
-      if (attempt < MAX_RETRIES - 1) await wait(RETRY_DELAY_MS);
-    }
-  }
-  return false;
-};
-
-const handler = async (m, { conn, text, usedPrefix, command }) => {
-  const userId = m.sender;
-  if (isUserBlocked(userId)) {
-    return conn.reply(m.chat, '🚫 Lo siento, estás en la lista de usuarios bloqueados.', m);
-  }
-
-  if (!text || !text.trim()) {
-    let thumbnailBuffer = null;
-    try {
-      const response = await axios.get('https://qu.ax/GbxoW.jpg', { responseType: 'arraybuffer' });
-      thumbnailBuffer = Buffer.from(response.data, 'binary');
-    } catch {}
-
-    return conn.reply(
-      m.chat,
-      `Uso: ${usedPrefix + command} <nombre de la canción>\n> Ejemplo: ${usedPrefix + command} Mi Vida Eres Tu`,
-      m,
-      {
-        contextInfo: {
-          externalAdReply: {
-            title: '•          𝐌𝐚𝐮/ 𝟑𝟑𝟑 Music',
-            previewType: 'PHOTO',
-            thumbnail: thumbnailBuffer || null,
-            mediaType: 1,
-            renderLargerThumbnail: false,
-            showAdAttribution: true,
-            sourceUrl: 'Ella Nunca Te Quizo'
-          }
-        }
-      }
-    );
-  }
-
-  const limaTime = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Lima' }));
-  const userNumber = m.sender.split('@')[0];
-  const reactionMessage = await conn.reply(
-    m.chat,
-    `${getUserGreeting(userNumber, limaTime)},\nEstoy buscando la música solicitada...`,
-    m,
-    { mentions: [m.sender] }
-  );
-
-  await conn.sendMessage(m.chat, { react: { text: '📀', key: reactionMessage.key } }, { quoted: m });
+  await m.react("🌀");
 
   try {
-    const searchResults = await yts(text.trim());
-    if (!searchResults?.videos?.length) throw new Error('No se encontraron resultados en YouTube.');
+    const search = await yts(text);
+    const video = search.all[0];
+    const url = video?.url;
+    if (!url) throw "❌ Video no encontrado.";
 
-    const videoInfo = searchResults.videos[0];
-    const { title, timestamp: duration, views, ago, url: videoUrl } = videoInfo;
+    if (["play", "yta", "ytmp3"].includes(command)) {
+      const audioUrl = await ddownr.download(url, "mp3");
+      await m.react("✅");
+      await conn.sendMessage(m.chat, {
+        audio: { url: audioUrl },
+        mimetype: "audio/mpeg",
+        fileName: `${video.title}.mp3`,
+      }, { quoted: m });
 
-    let thumbnailBuffer = null;
-    try {
-      const response = await axios.get(videoInfo.image, { responseType: 'arraybuffer' });
-      thumbnailBuffer = Buffer.from(response.data, 'binary');
-    } catch {}
+    } else if (["play2", "ytv", "ytmp4"].includes(command)) {
+      const sources = [
+        `https://api.siputzx.my.id/api/d/ytmp4?url=${url}`,
+        `https://api.zenkey.my.id/api/download/ytmp4?apikey=zenkey&url=${url}`,
+        `https://axeel.my.id/api/download/video?url=${encodeURIComponent(url)}`,
+        `https://delirius-apiofc.vercel.app/download/ytmp4?url=${url}`,
+      ];
 
-    const description = `╭─⬣「 *•          𝐌𝐚𝐮/ 𝟑𝟑𝟑-Ai* 」⬣
-│  ≡◦ 🎵 Título ∙ ${title}
-│  ≡◦ ⏱ Duración ∙ ${duration || 'Desconocida'}
-│  ≡◦ 👀 Vistas ∙ ${views.toLocaleString()}
-│  ≡◦ 📅 Publicado ∙ ${ago || 'Desconocido'}
-│  ≡◦ 🔗 URL ∙ ${videoUrl}
-╰─⬣
-> © Powered By •          𝐌𝐚𝐮/ 𝟑𝟑𝟑™`;
+      for (const src of sources) {
+        try {
+          const res = await fetch(src);
+          if (!res.ok) continue;
+          const json = await res.json();
+          const dl = json?.data?.dl || json?.result?.download?.url || json?.downloads?.url;
+          if (!dl) continue;
 
-    await conn.reply(
-      m.chat,
-      description,
-      m,
-      {
-        contextInfo: {
-          externalAdReply: {
-            title: title,
-            body: '•          𝐌𝐚𝐮/ 𝟑𝟑𝟑 Music',
-            previewType: 'PHOTO',
-            thumbnail: thumbnailBuffer || null,
-            mediaType: 1,
-            renderLargerThumbnail: false,
-            showAdAttribution: true,
-          }
-        }
+          await m.react("✅");
+          await conn.sendMessage(m.chat, {
+            video: { url: dl },
+            mimetype: "video/mp4",
+            fileName: `${video.title}.mp4`,
+          }, { quoted: m });
+
+          return;
+        } catch {}
       }
-    );
 
-    const downloadData = await getDownloadUrl(videoUrl);
-    if (!downloadData || !downloadData.url) {
-      await conn.sendMessage(m.chat, { react: { text: '🔴', key: reactionMessage.key } }, { quoted: m });
-      throw new Error('No se pudo descargar la música desde ninguna API.');
+      return m.reply("❌ No se pudo descargar el video.");
     }
-
-    await conn.sendMessage(m.chat, { react: { text: '🟢', key: reactionMessage.key } }, { quoted: m });
-    const success = await sendAudioNormal(conn, m.chat, downloadData.url, downloadData.title || title);
-    if (!success) throw new Error('No se pudo enviar el audio.');
-
-  } catch (error) {
-    await conn.sendMessage(m.chat, { react: { text: '🔴', key: reactionMessage.key } }, { quoted: m });
-    return conn.reply(m.chat, `🚨 *Error:* ${error.message || 'Error desconocido'}`, m);
+  } catch (e) {
+    console.error(e);
+    return m.reply("❌ Error inesperado.");
   }
 };
 
-handler.command = /^play$/i;
-handler.help = ['play <texto>'];
-handler.tags = ['descargas'];
+handler.command = ["play", "play2", "yta", "ytmp3", "ytv", "ytmp4"];
+handler.tags = ["downloader"];
+handler.help = ["play <texto o url>"];
 
 export default handler;
