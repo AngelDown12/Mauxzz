@@ -1,9 +1,13 @@
 let handler = async (m, { conn, usedPrefix, command }) => {
-  const img = 'https://qu.ax/iWwJT.jpg';
+  const img = 'https://files.catbox.moe/qkxkw3.jpg';
   const name = await conn.getName(m.sender);
-  const text = `|🍄‍🟫𝐑𝐞𝐲𝐞𝐬 𝐅𝐢𝐞𝐥 𝐄 𝐄𝐱𝐜𝐥𝐮𝐬𝐢𝐯𝐨|
-            𝐌𝐞𝐧𝐮-𝐁𝐲 𝟑𝟑𝟑
+  const text = `╔═════════════════╗
+║              ✧ *MENÚ DEL BOT* ✧
+╚═════════════════╝
 
+          ✦ ────  ✧  ──── ✦
+           𝐅𝐞𝐫𝐬𝐢𝐭𝐚 𝐗 𝐑𝐞𝐲𝐞𝐬 𝐇𝐞𝐡𝐞🫶🏼         
+          ✦ ────  ✧  ──── ✦
 ┣━━━━━━━━━━━━━━┫
 ┃⋗ 🗣️ *𝐀𝐛𝐫𝐢𝐫*
 ┃⋗ 🗣️ *𝐂𝐞𝐫𝐫𝐚𝐫* 
@@ -55,15 +59,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 ┃⋗ 👮 *.admins < Texto >*  
 ┃⋗ 📣 *.todos*  
 ┃⋗ 🚫 *.banchat*  
-┃⋗ ✅ *.unbanchat*  
-┃⋗ 🚫 *.mute*  
-┃⋗ ✅ *.unmute*  
-┃⋗ ⏰ *.horario*  
-┃⋗ 🤫 *.hidetag*  
-┃⋗ 📜 *.reglas*  
-┃⋗ 👻 *.fantasmas*  
-┃⋗ 🔄 *.nuevolink
-`.trim();
+┃⋗ ✅ *.unbanchat*`.trim();
 
   await conn.sendMessage(m.chat, { image: { url: img }, caption: text }, { quoted: m });
 };
